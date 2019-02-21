@@ -1,0 +1,109 @@
+\documentclass[11pt,a4paper,titlepage]{article}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{courier}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+ 
+\urlstyle{same}
+
+\setlength{\headheight}{16pt}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Energy Web Foundation}
+\lhead{EWF Authority Nodes}
+\rfoot{Page \thepage}
+
+\begin{document}
+\title{EWF Authority Nodes - Requirements and Procedures}
+\author{Markus Keil, Friedrich Raschwitz}
+\date{January 2019}
+
+\maketitle
+
+\begin{abstract}
+To provide a stable and secure blockchain for all affiliates and customers, it is important that all parties that run authority nodes follow the procedures and guidelines written in this document.
+Authority nodes are not used for interaction with the chain. If an affiliate wants to access the chain via RPC through a central node it has to be set up separately as non-authority.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+\input{nomenclature.tex}
+\newpage
+\input{system-design.tex}
+\newpage
+\input{nodecontrol.tex}
+\newpage
+\input{genesis-network.tex}
+\newpage
+\input{threat-model.tex}
+\newpage
+\input{incentivation.tex}
+\newpage
+
+\section{Validators run by Affiliates}
+
+This section will go through the requirements needed to run a standard validator by an EWF affiliate.
+
+\input{hardware.tex}
+\input{supported-os.tex}
+\input{connectivity.tex}
+\input{aws-security.tex}
+
+%\newpage
+%\input{ssh.tex}
+\newpage
+\input{general-setup.tex}
+
+
+\newpage
+\input{os-install.tex}
+\newpage
+\input{telemetry.tex}
+
+\newpage
+\input{normal-operations.tex}
+\newpage
+\input{updates-and-hardforks.tex}
+
+
+\end{document}

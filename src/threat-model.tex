@@ -1,0 +1,83 @@
+\section{Threat model}
+
+This section describes potential attack vectors to the system and how they are either mitigated by the system design, automatic intervention or human intervention.
+
+\subsection{Telemetry}
+
+As telemetry needs to flow from the validators to a single ingress point on the management system it is not protected by decentralization.
+This telemetry helps to detect abnormalities in the operation of the validators caused by either system malfunction or deliberate attacks.
+
+\begin{description}
+    \item[Sending tampered data] 
+        If an attacker manages to disturb node operation, he might try to disguise this by sending normal looking telemetry to the telemetry ingress on behalf of the attacked node. NetOps would detect the faulty node with increased time delay as telemetry data would contradict actual node behavior. \\
+        \textbf{Prevention:} Each telemetry package will be signed with the validators private key and verified by telemetry ingress. This way an attacker is not able to send tampered telemetry on behalf of a node.
+    
+    \item[Denial-of-Service against the telemetry ingress] 
+        An attacker might try to bring down the telemetry ingress completely to "blind" the EWF NetOps team about the status of the validator network. \\
+        \textbf{Mitigation:} Telemetry senders on the validators will keep track of connection failures to the telemetry ingress. If the connection is unstable or down for a particular amount of time the node will send periodically (<10 minutes) basic health metrics via a second channel (eg. E-Mail).
+        EWF NetOps has access to this channel and can at least verify basic health of the system.
+
+    \item[Phishing for telemetry] 
+        An attacker might try to receive telemetry from a node by re-routing telemetry traffic to an attacker system that mimics the ingress (DNS spoofing, MITM). The attacker can gain knowledge about for example the systems load patterns or how a system might respond to an attack. \\
+        \textbf{Prevention:} Connection between telemetry sender and telemetry ingress is HTTPS. The SHA256 fingerprint of the ingress certificate is verified against the known good fingerprints.
+        The fingerprint gets deployed along with the telemetry sender component and can only be updated through an update request from the blockchain.
+        
+    \item[DNS-Spoof/MitM against GUI] 
+        An attacker might manage to DNS Spoof/MitM the connection between the browser of a member from the NetOps team and the telemetry backend. This way the attacker could present a faked system state of the validator network to NetOps. \\
+        \textbf{Prevention:} Each JSON response from the telemetry backend needs to carry a signature for the payload that can be verified by the management dApp
+
+    \item[Unauthorized access to telemetry data]
+        Telemetry data should only be available to the EWF NetOps Team. An attacker might try to directly call the telemetry backend to receive the data. \\
+        \textbf{Prevention:} The telemetry backend will present a challenge to the GUI which the EWF NetOps team member has to sign with his private key using metamask. This challenge+signature is then send along with all following requests and verified against a smart contract.
+
+\end{description}
+
+\subsection{Node Control}
+
+The Node control component is used to carry out updates to the validator nodes. These updates need to be legitimized by the EWF NetOps and GovOps teams.
+The component has the potential to disable a node due to a faulty or malicious update .
+
+\begin{description}
+    \item[Send fake update event] 
+        An attacker might try to fool the NodeControl into carrying out an update script that is not approved. \\
+        \textbf{Prevention:} NodeControl will talk to its local blockchain client most of the time via IPC. 
+        If it has to talk to outside nodes because the local client is down, it'll use incubed to verify responses.
+
+    \item[Compromised Payload]
+        An attacker might MitM traffic to any server NodeControl would download a payload from (mainly used for the chain spec file update process). \\
+        \textbf{Containment:} Each update will have the SHA256 hash of its agreed payload on chain. The payload downloaded by NodeControl is verified against this hash. If the hashes don't match NodeControl will not carry out the command and report a faulty update to the NodeControl Contract.
+
+\end{description}
+
+
+\subsection{Management GUI/dApp}
+
+The Management GUI is the central hub for the NetOps team to verify healthiness and current operational status of the validator network. Therefore it has a high requirement on reliability.
+
+\begin{description}
+
+    \item[Server delivering UI to NetOps is not available] 
+        An attacker might be able to DDoS the Server/CDN or otherwise disturb connection to the assets needed to run the management dApp. \\
+        \textbf{Prevention:} The dApp itself is hosted on IPFS. Therefore taking down a single UI serving node won't disturb operation. For improved reliability NetOps members should run their own local IPFS nodes and use the IPFS companion extension,
+        This allows the local IPFS node to be used to deliver the GUI to the browser. 
+
+    \item[Deliver malicious dApp to NetOps team] 
+        An attacker might be able to deliver a malicious dApp to the NetOps team. With this it might be possible to deceive NetOps about the current status of the validator network or have them sign bogus update commands.  \\
+        \textbf{Prevention:} Provide a local bootstrap copy of the index.html page that loads the dApp from IPFS, preferably with a local IPFS node. Have hardcoded checksums of those files in the index.html and verify payload during load as the attacker could intercept HTTPS traffic to the IPFS gateways or the local node and deliver a malicious asset to the browser.
+
+\end{description}
+
+
+\subsection{Other Attack Vectors}
+
+This section consolidates attack vectors that are either not specific to a single component or targeted against miscellaneous components.
+
+
+\begin{description}
+
+    \item[Attack time servers] 
+        The Aura PoA consensus algorithm highly depends on accurate system clocks. An attacker could try to manipulate the system clock by intercepting requests made by the operating system via NTP (Network Time Protocol). If the attacker shifts the system time by +block time or -block time the validator will start signing during the wrong slot. Other validators then won't accept that block because it is out-of-turn and vice-versa the manipulated node would mark all incoming blocks as invalid as from its point of view all other validators appear to be syncing out-of-turn. \\
+        \textbf{Mitigation:} Some validator nodes should use high-precision hardware clocks such as GPS-based ones or DCF-77 clocks instead of NTP for their time source. This way not the whole network is affected. Normal operation could be restored by removing all non-precision-clock nodes from the network. This could mean reduced chain performance.
+
+\end{description}
+

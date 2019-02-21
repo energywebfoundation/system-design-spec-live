@@ -1,0 +1,45 @@
+digraph {
+    
+    start [shape=box,style=rounded, label="Onboard new validator"]
+    end [shape=box,style=rounded, label="Validator signing"]
+    endbad [shape=box,style=rounded, label="Validator declined"]
+
+    s1 [shape=box, label="Affiliate applies for running a validator\nand tells GovOps desired OS/platform\nApplication is stored in contract"]
+    s11 [shape=diamond, label="GovOps/NetOps\ndecide on application"]
+    
+
+    s2 [shape=box, label="NetOps provides installation guide\nand decides on OS to use\nalong with an affiliateId "]
+    s3 [shape=box, label="Affiliate installs node using the affiliateId.\ninstall script generates unique NodeId"]
+    s3a [shape=ellipse, label="Node will run as non-validator\nafter installation"]
+    s3b [shape=box, label="NodeControl will report\nnew node to netops contract"]
+    s4 [shape=diamond, label="NetOps verifies\nproper installation"]
+    s4n [shape=box, label="NodeId gets declined\nand recorded on chain\nas failed install for affiliateId"]
+    s4y [shape=box, label="Installation gets recorded as\nOK on chain"]
+
+    s5 [shape=box, label="Affiliate will run\nvalidator key generation process"]
+    s7 [shape=box, label="NodeControl will add node\nas pending signer to the contract\nand restart node in signer mode"]
+    s10 [shape=diamond, label="NetOps/GovOps\ndecide on activation"]
+    s10n [shape=box, label="Node gets declined\nand reason recorded"]
+    s10y [shape=box, label="Node gets activated\nin validator contract"]
+    
+
+    start -> s1 -> s11
+    s11 -> s2 [label="accepted"]
+    s11 -> endbad [label="declined"]
+    s2 -> s3 -> s3a -> s3b -> s4
+    s4 -> s4n [label="declined"] 
+    s4n -> s11
+    s4 -> s4y [label="accepted"]
+
+    s4y -> s5 -> s7 -> s10
+    s10 -> s10n [label="abort"]
+    s10n -> s11 
+    s10 -> s10y  [label="accepted"]
+    s10y -> end
+
+    {rank=same; s4 s4n}
+    {rank=same; s10 s10n}
+    {rank=same; s11 endbad}
+
+
+}

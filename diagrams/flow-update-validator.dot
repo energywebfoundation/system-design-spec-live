@@ -1,0 +1,56 @@
+digraph {
+    splines="compound"   
+    start [shape=box,style=rounded, label="Update a validator"]
+    end [shape=box,style=rounded, label="Update finished"]
+    endbad [shape=box,style=rounded, label="Update failed/aborted"]
+
+    s1 [shape=box, label="NetOps creates update script"]
+    s2 [shape=box, label="NetOps uploads script to IPFS"]
+    s3 [shape=box, label="NetOps proposes\nthe update to GovOps\nOn-Chain"]
+    s4 [shape=diamond, label="GovOps decide\non update"]
+    s4n [shape=box, label="Update gets recorded as\nnot accepted on chain"]
+    s4y [shape=box, label="Update gets recorded as\naccepted on chain"]
+
+    s5 [shape=box, label="NetOps splits validators into 2 waves\n(1/3 | 2/3)"]
+    s6 [shape=box, label="NetOps triggeres wave\nvia SC event"]
+    s7 [shape=box, label="Node Control receives\nand verifies update event\ndownloads update script from IPFS.\nReports update readiness"]
+    s10 [shape=diamond, label="Did all nodes\nreport update ready?"]
+    s10n [shape=box, label="Abort and Update gets\nrecorded as failed on chain"]
+    s10y [shape=box, label="Update is executed"]
+    s11 [shape=diamond, label="NodeControl\nverifies result"]
+    s12n [shape=box, label="Rollback Update"]
+    s12y [shape=box, label="Record success"]
+    s15 [shape=box, label="Request next wave"]
+
+    s14 [shape=diamond, label="Final Wave?"]
+
+    start -> s1 -> s2 -> s3 -> s4
+    s4 -> s4n [label="declined"]
+    s4 -> s4y [label="accepted"]
+    s4n -> endbad
+    
+    s5 -> s6 [label="first wave"]
+
+    s4y -> s5 
+    s6 -> s7 -> s10
+    s10 -> s10n [label="no"]
+    s10 -> s10y [label="yes"]
+    s10n -> endbad
+    s10y -> s11
+    s11 -> s12y [label="ok"]
+    s11 -> s12n [label="bad"]
+    s12n -> s10n
+    s12y -> s14
+    
+    s14 -> s15 [label="no"]
+    s15 -> s6
+    s14 -> end [label="yes"]
+
+
+    {rank=same; s4 s4n}
+    {rank=same; end endbad}
+    
+    {rank=same; s15 s6}
+    {rank=same; s12y s12n s14}
+
+}

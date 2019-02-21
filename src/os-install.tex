@@ -1,0 +1,184 @@
+\section{Operating system installation}
+
+The following section provide a comprehensive guide for installation of one the supported operating systems.
+All further deployment procedures are based on the installation results.
+
+\subsection{Ubuntu Server 18.04 LTS}
+
+\subsubsection{On-Premise}
+
+Procedure based on version 18.04.2.
+
+\begin{itemize}
+    \item Download the ISO from https://www.ubuntu.com/download/server.
+    \item Boot the ISO
+    \item Select \textbf{English} as language
+    \item Choose a convenient keyboard layout
+    \item Choose \textbf{Install Ubuntu}
+    \item Let the network auto-configure -or- configure manually if needed. The system needs an internet connection.
+    \item Select no proxy and keep the mirror address.
+    \item Select \textbf{Use an entire disk} and confirm
+    \item Choose user name and host name in next screen. Choose a strong password.
+    \item Select \textbf{Install OpenSSH Server} but don't import keys   
+    \item Don't select any snaps and continue
+    \item Finish installation and let it boot to the prompt
+    \item Login as the created user and run a full system update using \texttt{sudo apt update \&\& sudo apt dist-upgrade -y}
+\end{itemize}
+
+\subsubsection{AWS}
+
+The Ubuntu AMI Id's for all regions in AWS can be found in Table \ref{ubuntuami}
+
+Also Ubuntu AMI's are listed at https://cloud-images.ubuntu.com/locator/ec2/. Search for \textbf{ebs 18.04 amd64} to get the correct version.
+
+\begin{table}[]
+\centering
+\begin{tabular}{ll}
+Region         & AMI ID                \\
+ap-northeast-1 & ami-0eb48a19a8d81e20b \\
+ap-south-1     & ami-007d5db58754fa284 \\
+ap-southeast-1 & ami-0dad20bd1b9c8c004 \\
+ca-central-1   & ami-01b60a3259250381b \\
+eu-central-1   & ami-090f10efc254eaf55 \\
+eu-north-1     & ami-5e9c1520          \\
+eu-west-1      & ami-08d658f84a6d84a80 \\
+sa-east-1      & ami-09f4cd7c0b533b081 \\
+us-east-1      & ami-0a313d6098716f372 \\
+us-west-1      & ami-06397100adf427136 \\
+cn-northwest-1 & ami-09b1225e9a1d84e4c \\
+cn-north-1     & ami-09dd6088c3e46151c \\
+us-gov-west-1  & ami-66bdd307          \\
+us-gov-east-1  & ami-7bd2340a          \\
+ap-northeast-2 & ami-078e96948945fc2c9 \\
+ap-southeast-2 & ami-0b76c3b150c6b1423 \\
+eu-west-2      & ami-07dc734dc14746eab \\
+us-east-2      & ami-0c55b159cbfafe1f0 \\
+us-west-2      & ami-005bdb005fb00e791 \\
+ap-northeast-3 & ami-0babd61cf592f1c03 \\
+eu-west-3      & ami-03bca18cb3dc173c9
+\end{tabular}
+\caption{Ubuntu 18.04 LTS AWS AMI Id's}
+\label{ubuntuami}
+\end{table}
+
+\subsubsection{Azure}
+
+The URN for the image is \texttt{Canonical:UbuntuServer:18.04-LTS:latest}
+
+\subsection{Debian 9.8}
+
+\subsubsection{On-Premise}
+
+\begin{itemize}
+    \item Download the NetInst ISO from https://www.debian.org/distrib/netinst
+    \item Boot the ISO
+    \item Select \textbf{Install} from the boot screen
+    \item Select \textbf{English} as language
+    \item Select Location based on actual location of the host
+    \item Chose a convenient keyboard layout
+    \item Let the network auto-configure -or- configure manually if needed. The system needs an internet connection.
+    \item Name your host. Change it from \textit{debian} to something else
+    \item Choose a strong root password
+    \item create the user account and choose a strong password
+    \item select the proper timezone
+    \item For the partitions use \textbf{Guided - use entire disk}
+    \item Select \textbf{All files in one partition}
+    \item Finish partitioning and write changes to disk
+    \item Select \textbf{No} when ask to scan more disks
+    \item Choose a mirror close to the host
+    \item Opt-out of the package survey
+    \item on the \textbf{Software Selection} select only \textbf{SSH Server} and \textbf{standard system utilities}
+    \item Install the grub bootloader to MBR and use the primary disk for that
+    \item Finish installation and let it boot to the prompt
+    \item Login as \texttt{root} and run a full system update using \texttt{apt update \&\& apt dist-upgrade -y}
+    \item Reboot
+\end{itemize}
+
+\subsubsection{AWS}
+
+The AMI Id's for all regions in AWS can be found in Table \ref{debami}
+
+\begin{table}[]
+\centering
+\begin{tabular}{ll}
+Region         & AMI ID                \\
+eu-north-1     & ami-043a919b6dc7c51cc \\
+ap-south-1     & ami-0b6490868957ce747 \\
+eu-west-3      & ami-0cb185e7696ffe300 \\
+eu-west-2      & ami-0ef10a4062f24d89d \\
+eu-west-1      & ami-035c67e6a9ef8f024 \\
+ap-northeast-2 & ami-0fa1392d5d545f9e8 \\
+ap-northeast-1 & ami-0c4290d7ce45d7bbe \\
+sa-east-1      & ami-0bc0ce4ab8b82305c \\
+ca-central-1   & ami-0857efbad274a1a89 \\
+ap-southeast-1 & ami-04c9740a9ed018dba \\
+ap-southeast-2 & ami-0b91189c4f9f5cd9e \\
+eu-central-1   & ami-05449f21272b4ee56 \\
+us-east-1      & ami-0f9e7e8867f55fd8e \\
+us-east-2      & ami-00c5940f2b52c5d98 \\
+us-west-1      & ami-0afda78f1d0272d99 \\
+us-west-2      & ami-01d07e14f082b3ba1
+\end{tabular}
+\caption{Debian 9.8 AWS AMI's}
+\label{debami}
+\end{table}
+
+You can retrieve this list also from https://wiki.debian.org/Cloud/AmazonEC2Image/Stretch
+
+\subsubsection{Azure}
+
+The URN for the image is \texttt{credativ:Debian:9:latest}
+
+\subsection{CentOS 7}
+
+\subsubsection{On-Premise}
+
+\begin{itemize}
+    \item Download the minimal ISO from https://www.centos.org/download/
+    \item Boot the ISO
+    \item Confirm the automatic boot option \textbf{Test this media \& install CentOS 7}
+    \item Choose \textbf{English} as language
+    \item On the installation summary choose "Installation destination" and confirm "automatic partinioning"
+    \item Back on the installation summary screen click on "Network \& Hostname"
+    \item change the hostname
+    \item enable the network interface and make sure it is configured properly
+    \item Click \textbf{Done} to get back to the summary and click \textbf{Begin Installation}
+    \item During installation set a root password 
+    \item Finish installation and let it boot to the prompt
+    \item Login as \texttt{root} and run a system update with \texttt{yum update}
+\end{itemize}
+
+\subsubsection{AWS}
+
+The AMI Id's for all regions in AWS can be found in Table \ref{centami}
+
+\begin{table}[]
+\centering
+\begin{tabular}{ll}
+Region         & AMI ID       \\
+ap-northeast-1 & ami-25bd2743 \\
+ap-northeast-2 & ami-7248e81c \\
+ap-south-1     & ami-5d99ce32 \\
+ap-southeast-1 & ami-d2fa88ae \\
+ap-southeast-2 & ami-b6bb47d4 \\
+ca-central-1   & ami-dcad28b8 \\
+eu-central-1   & ami-337be65c \\
+eu-west-1      & ami-6e28b517 \\
+eu-west-2      & ami-ee6a718a \\
+eu-west-3      & ami-bfff49c2 \\
+sa-east-1      & ami-f9adef95 \\
+us-east-1      & ami-4bf3d731 \\
+us-east-2      & ami-e1496384 \\
+us-west-1      & ami-65e0e305 \\
+us-west-2      & ami-a042f4d8 \\
+\end{tabular}
+\caption{CentOS 7 AWS AMI's}
+\label{centami}
+\end{table}
+
+You can retrieve the list also from \\
+https://wiki.centos.org/Cloud/AWS\#head-78d1e3a4e6ba5c5a3847750d88266916ffe69648
+
+\subsubsection{Azure}
+
+The URN for the image is \texttt{OpenLogic:CentOS:7.5:latest}

@@ -1,0 +1,22 @@
+\section{Nomenclature}
+
+\begin{description}
+    \item[EWF Network Operations (NetOps)] 
+        Group of people on EWF side with the responsibility to keep the blockchain secure and operational at all times.
+    \item[EWF Governance Operations (GovOps)] 
+        Group of people on EWF side that decide on governance questions.
+    \item[NodeControl] 
+        A system component that carries out operational tasks on a validator node on behalf of NetOps
+    \item[Bootnode] 
+        Parity node that runs in fullnode configuration and is part of the bootnode section of the chainspec file.
+        New clients that join the chain will contact a bootnode to discover other nodes on the network that are known to the bootnode.
+    \item[Validator Node]
+        Parity node that seals transactions into new blocks based on the AURA consensus algorithm.
+    \item[Genesis Node]
+        A special validator node. The genesis nodes are the first ones on the network and operated by EWF. These nodes will bootstrap the blockchain with the genesis block.
+    \item[Fullnode]
+        A simple node on the network that don't seal new blocks. These nodes are not in the scope of these guidelines
+    \item[Supportnode]
+        A host that runs auxiliary services like IPFS or Incubed Server
+
+\end{description}

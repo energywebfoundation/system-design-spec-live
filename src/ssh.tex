@@ -1,0 +1,86 @@
+\newcommand{\code}[1]{\texttt{#1}}
+\section{SSH Setup}
+A safe access is needed when interacting with remove machines. SSH is one of the most widely used programs for this purpose. It is found in the software repositories of most Linux-based OS. \\
+By default SSH uses password-based access, however in this section a better approach based on RSA key-pairs is shown.
+
+\subsection{Clientsetup}
+The client has to prove to the server that he is in the possession of a private key which corresponds to a public key on the server.
+\begin{enumerate}
+    \item{\textbf{Installation}}\\
+        The package openssh-client is needed.\\
+Debian or Ubuntu: \\
+\code{
+    \# apt-get install openssh-client \\
+}
+Fedora: \\
+\code{
+    \# yum -y install openssh-client \\
+}
+Create the .ssh folder in the home directory if not present. \\
+    \item{\textbf{Generating the keypair}}\\
+Then to create a RSA keypair do: \\
+\code {
+    \# ssh-keygen -t rsa -b 4096 -f ~/.ssh/\textit{filename} \\
+}
+This will generate a 4096 bit sized RSA key-pair with a filename of your choosing, after asking for a passphrase. By default the command would generate a private key with the filename "id\_rsa" and insert it into .ssh, but in case of using several RSA keys it is better to differentiate between them.  \\
+The private key has to have permissions set to 600:\\
+\code{
+    \# chmod 600 \textit{filename}
+}
+    \item{\textbf{Configuration}}\\
+To tell SSH which key should be used a config file needs be created. It also allows creating an SSH connection using a shorter name for the host instead of writing the full domain or IP.\\
+Add a file in .ssh with the name "ssh\_config" with the following content:\\
+\code{
+    Host \textit{servername}
+}\\ \indent
+ \hspace{15pt}\code{
+    HostName \textit{server-domain}
+} \\ \indent
+\hspace{15pt}\code{
+    User \textit{remote-username}
+} \\ \indent
+\hspace{15pt}\code{
+    Identityfile \textit{~/.ssh/filename}
+} \\
+The "Host" option can be any name of your choosing, e.g. "ewf-node". "Hostname" is the address of the server and "User" is the username on that server. Finally, the "Identityfile" option should point to your private key. Once the server is set up a connection can be established using \code{ssh \textit{hostname}}.  \\
+More information on the configuration file can be found here: \\ https://www.ssh.com/ssh/config/
+\end{enumerate}
+\subsection{Serversetup}
+On the serverside one needs to open the SSH port and transfer the public key of the user.  \\
+\begin{enumerate}
+    \item{\textbf{Installation}}\\
+First the server package needs to be installed: \\
+Debian or Ubuntu: \\
+\code{
+    \# apt-get install openssh-server \\
+}
+Fedora: \\
+\code{
+    \# yum -y install openssh-server \\
+}
+    \item{\textbf{Configuration \& Ports}}\\
+Edit the file /etc/ssh/sshd\_config and add a new line with the following option: \\
+\code{
+PermitRootLogin no\\
+}
+Then some ports need to be opened:\\
+\code{
+    \# iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT\\
+    \# iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT\\
+}
+Save the iptables config using:
+\code{
+    \# service iptables save
+}
+\\
+Next a persistent SSH service needs to be enabled: \\
+\code{
+    \# service ssh enable
+}
+    \item{\textbf{Transferring the public key}}\\
+When generating a keypair using ssh-keygen, the public key is called the same as the private key, except that it has the suffix ".pub". \\
+This public key needs to be transferred from the client from the client to the directory "known\_hosts" in the .ssh directory. It can be done with various means. SSH provides an dedicated command for that:\\
+\code{
+    \# ssh-copy-id -i \textit{path/to/public/key*} "\textit{remote-username}@\textit{server-domain}"
+}
+\end{enumerate}

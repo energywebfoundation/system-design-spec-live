@@ -1,0 +1,65 @@
+digraph G {
+    splines="compound"
+    subgraph cluster_0 {
+        label="Validator Node #1"
+        fillcolor=lightgrey
+        p1 [label="Parity",shape=box,style=filled,fillcolor=green]
+        t1 [label="Telemetry Collector\nTelegraf",shape=box,style=filled,fillcolor=green]
+        ts1 [label="Telemetry Signer",shape=box,style=filled,fillcolor=yellow]
+        nc1 [label="NodeControl",shape=box,style=filled,fillcolor=yellow]
+        os1 [label="Operating System",shape=box,style=filled,fillcolor=green]
+        nc1 -> p1 -> t1 -> ts1
+        nc1 -> os1
+    }
+
+    subgraph cluster_1 {
+        label="Validator Node #2"
+        fillcolor=lightgrey
+        p2 [label="Parity",shape=box,style=filled,fillcolor=green]
+        t2 [label="Telemetry Collector\nTelegraf",shape=box,style=filled,fillcolor=green]
+        ts2 [label="Telemetry Signer",shape=box,style=filled,fillcolor=yellow]
+        nc2 [label="NodeControl",shape=box,style=filled,fillcolor=yellow]
+        os2 [label="Operating System",shape=box,style=filled,fillcolor=green]
+        nc2 -> p2 -> t2 -> ts2
+        nc2 -> os2
+    }
+
+    subgraph cluster_2 {
+        label="IPFS Network"
+        fillcolor=lightgrey
+        il [label="IPFS Link",shape=box,style=filled,fillcolor=yellow]
+        i1 [label="IPFS node #1",shape=box,style=filled,fillcolor=green]
+        i2 [label="IPFS node #2",shape=box,style=filled,fillcolor=green]
+        il -> {i1,i2}
+    }
+
+    subgraph cluster_3 {
+        label="Management GUI"
+        fillcolor=lightgrey
+        dapp [label="React dApp",shape=box,style=filled,fillcolor=yellow]
+        mm [label="MetaMask",shape=box,style=filled,fillcolor=green]
+        dapp -> mm
+        mm -> dapp
+    }
+
+    subgraph cluster_4 {
+        label="Telemetry\n(centralized)"
+        fillcolor=lightgrey
+        ti [label="Ingress w/sig verification",shape=box,style=filled,fillcolor=yellow]
+        tdb [label="InfluxDB",shape=box,style=filled,fillcolor=green]
+        tbe [label="Backend w/acc verify\n(like CryptoKitties)",shape=box,style=filled,fillcolor=yellow]
+        ti -> tdb -> tbe
+    }
+    
+    
+    chain [shape=diamond,label="BlockChain",style=filled, fillcolor=green]
+
+    dapp -> tbe
+
+    dapp -> chain [constraint=false]
+    il -> chain [constraint=false]
+    {nc1,nc2} -> chain [constraint=false]
+    chain -> {nc1,nc2} [constraint=false]
+    {ts1,ts2}->ti
+
+}

@@ -1,0 +1,19 @@
+\subsection{Connectivity Requirements}
+
+The following requirements should be met to ensure proper operation:
+
+\begin{itemize}
+    \item Wired connection with 100 MBit/s symmetric link to the internet
+    \item Low latency connection to next internet hop (<5ms)
+    \item No data volume limitations
+\end{itemize}
+
+Even this document requires a 100MBit/s connection, that connection will not be saturated by the node. You can expect ~10-30MBit/s \footnote{TODO: need to verify} when the chain is under load. 
+Traffic will mainly flow on port 30303 (udp/tcp). If chosen to run on a cloud provider, EWF NetOps needs to be consulted to select an appropriate hosting region to ensure node distribution across multiple regions.
+If chosen to run on-premise, EWF NetOps has to be informed about the hosting location to ensure proper global distribution decisions can be made.
+The hosting location should be chosen to be as close as possible to one of the major internet exchanges:
+
+\begin{itemize}
+    \item Germany/Continental Europe/USA - DE-CIX / AMS-IX
+    \item United Kingdom - LINX
+\end{itemize}

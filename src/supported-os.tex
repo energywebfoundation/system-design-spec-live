@@ -1,0 +1,30 @@
+\subsection{Supported Operating Systems}
+
+The following Linux-based Operating Systems are supported for running a authority node: 
+
+\begin{itemize}
+    \item Ubuntu Server 18.04 LTS
+    \item Debian 9.8
+    \item CentOS 7
+\end{itemize}
+
+Affiliates can apply for a certain operating system, but in order to keep a heterogeneous infrastructure EWF NetOps can instruct the Affiliate to use a specific operating system from the above list. 
+The operating system must be installed according to the settings described in this document to qualify the host for becoming part of the authority network.
+
+
+\subsection{Security Requirements}
+
+Running an authority nodes requires raised awareness of host and node security as authorities are a main attack surface to disturb operation of the block chain.
+The following security rules apply:
+
+\begin{itemize}
+    \item No services are permitted to run on the same host that are not part of the authority node package
+    \item All incoming connections on all ports except SSH (22/tcp) and the P2P (30303/tcp+udp) port have to be firewalled on the host with DROP rules. To guarantee proper network etiquette, incoming ICMP has to be accepted.
+    \item SSH access is only allowed for non-root users
+    \item SSH access is only allowed through RSA keys
+    \item Parity RPC endpoints (HTTP, WebSocket) have to be disabled
+    \item System updates have to applied regularly and in a timely manner
+    \item Regular run of rootkit detectors
+\end{itemize}
+
+Most of these rules will be provided in the following set up guides.

@@ -1,0 +1,57 @@
+\subsection{Hardware/VM selection for Validators}
+
+Affiliate can choose to run the node either On-Premise on their own hardware or at one of the supported cloud-providers.
+
+\subsubsection{On-Premise}
+
+A on-premise node should have these specs or higher. These resources should be reserved for the validator node and not shared with other workloads.
+
+\begin{enumerate}
+    \item Modern Multi-core x64 CPU (at least 4 threads, preferably Xeon-class)
+    \item 8GB RAM (preferably ECC)
+    \item Local SSD storage, 250GB free capacity for blockchain, redundant in RAID-1
+    \item 1 GBit NIC
+\end{enumerate}
+
+\subsubsection{Amazon AWS}
+
+The following EC2 instance sizes are appropriate to run validators:
+
+\begin{itemize}
+    \item m5.xlarge
+    \item m5.2xlarge
+    \item m5a.xlarge
+    \item m5a.2xlarge
+    \item c5.xlarge
+    \item c5.2xlarge
+\end{itemize}
+
+The default EBS storage assigned (normally 8GB) is not large enough to run the node. Make sure to run the node with following EBS storage settings:
+\begin{itemize}
+    \item General Purpose SSD (gp2)
+    \item at least 300GB size
+\end{itemize}
+
+\subsubsection{Microsoft Azure}
+
+The following Azure VirtualMachine sizes are suitable to run a validator:
+
+\begin{itemize}
+    \item D4s\_v3
+    \item DS3\_v2
+    \item B4ms
+\end{itemize}
+
+Use \textbf{Premium SSD} as attached storage with a size of at least \textbf{300GB}.
+
+\subsection{Reliability and Diversity}
+
+EWF NetOps will guarantee a certain reliability and diversity by enforcing heterogeneity of geographical location, Operative System and cloud service. The rationale is that a bug of a specific OS, a failure of a cloud service provider or the backbone internet service provider should not harm the consensus of the Validators. \\
+For this reason, NetOps establishes a set of rules:
+
+\begin {itemize}
+    \item There are at least two Validators running different OS in the system.
+    \item The second most common OS is run by at least 20\% of Validators.
+    \item There are at least 15\% Validators operating from America, 15\% from Europe and 15\% from Asia.
+    \item At least two cloud services are used. The second most popular is used by at least 20\% of the Validators.
+\end{itemize}

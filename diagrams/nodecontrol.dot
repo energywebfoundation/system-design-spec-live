@@ -1,0 +1,24 @@
+digraph {
+    
+    start [shape=box,label="NodeControl starts"]
+    listen [shape=box,label="Wait for new Block"]
+
+    check [shape=box,label="Query new Block"]
+
+    hasevent [shape=diamond, label="Block contains\nNodeControl\n event\nfor our address?"]
+    geteventid [shape=box, label="Read NodeControl\nEventId from event"]
+    waitfinal [shape=box, label="Wait for finality"]
+    readinstruction [shape=box, label="Read update instruction from\nNodeControl Contract\nand confirm event received\nto contract"]
+    execute [shape=box, label="Execute update instruction"]
+    reportdone [shape=box, label="Report update as executed to\nnodecontrol contract via EventId"]
+
+    start -> listen -> check -> hasevent
+    hasevent -> listen [label="no"]
+    hasevent -> geteventid [label="yes"]
+
+    geteventid -> waitfinal -> readinstruction -> execute -> reportdone -> listen
+    
+
+    {rank=same;listen check}
+
+}

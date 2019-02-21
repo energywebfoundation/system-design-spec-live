@@ -1,0 +1,19 @@
+{
+  "name": "ewf-ops",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.slock.it:ewf/governance/network-operations-guide.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "diagrams": "^0.10.0"
+  }
+}

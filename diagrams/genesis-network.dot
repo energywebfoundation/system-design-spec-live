@@ -1,0 +1,50 @@
+graph G {
+
+    val1 [shape=box, label="Validator 1\neu-central-1"]
+    val2 [shape=box, label="Validator 2\nap-southeast-1"]
+    val3 [shape=box, label="Validator 3\nus-west-1"]
+
+    boot1 [shape=box, label="Bootnode 1\neu-central-1"]
+    boot2 [shape=box, label="Bootnode 2\neu-west-1"]
+    boot3 [shape=box, label="Bootnode 3\nap-southeast-1"]
+    boot4 [shape=box, label="Bootnode 4\nus-east-2"]
+    boot5 [shape=box, label="Bootnode 5\nus-west-1"]
+
+    internet [label="Public Internet"]
+
+
+
+    {rank=same; val1 val2 val3 }
+    {rank=same; boot1 boot2 boot3 boot4 boot5 }
+
+    val1 -- val2 -- val3 [color=red]
+    boot1 -- boot2 -- boot3 -- boot4 -- boot5  [color=green]
+
+
+    val1 -- boot1 [color=red]
+    val2 -- boot1 [color=red]
+    val3 -- boot1 [color=red]
+
+    val1 -- boot2 [color=red]
+    val2 -- boot2 [color=red]
+    val3 -- boot2 [color=red]
+
+    val1 -- boot3 [color=red]
+    val2 -- boot3 [color=red]
+    val3 -- boot3 [color=red]
+
+    val1 -- boot4 [color=red]
+    val2 -- boot4 [color=red]
+    val3 -- boot4 [color=red]
+
+    val1 -- boot5 [color=red]
+    val2 -- boot5 [color=red]
+    val3 -- boot5 [color=red]
+
+    boot1 -- internet [color=green]
+    boot2 -- internet [color=green]
+    boot3 -- internet [color=green]
+    boot4 -- internet [color=green]
+    boot5 -- internet [color=green]
+
+}

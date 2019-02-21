@@ -1,0 +1,11 @@
+Browser -> IPFS Link : GET /tobalaba-management
+IPFS Link -> Blockchain : Query for IPFS hash of 'tobalaba-management'
+Note right of Blockchain : IPFS-Link Contract
+Blockchain -> IPFS Link : Return IPFS hash
+IPFS Link -> Browser : Redirect to IPFS gateway with hash
+Browser -> IPFS : Request file from IPFS
+IPFS -> Browser : Response with react index.html
+Note left of Browser : Parse index.html
+Browser -> IPFS : Query assets (JS/CSS)
+IPFS -> Browser : Deliver assets
+note left of Browser : Start dApp

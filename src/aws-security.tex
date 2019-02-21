@@ -1,0 +1,22 @@
+\subsection{AWS Security}
+When using EC2 instances one can provide at least one additional layer of security using a virtual firewall. The access of administrative tasks outside of the virtual OS also needs to be taken care of.
+
+\subsubsection{Access Management Recommendations}
+\begin{enumerate}
+    \item Do not use the root account for managing EC2 instances, instead assign a new user administrative rights for doing that.
+    \item Use groups to manage permissions with multiple users and always keep the set of permissions to a minimum
+    \item Enable multi-factor authentication for administrative accounts
+    \item Regularly check logs regarding account activity, e.g. using Cloudfront \href{https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html}{AWS Docs: Access Logs}
+\end{enumerate}
+
+\subsubsection{AWS Firewall}
+
+AWS provides an alternative firewall solution for their virtual OS. Instead of configuring the firewall in the OS itself (or additionally), one can configure it one layer above. This firewall is defined by a set of "security groups". Each security group contains rules what packets should be permitted to or from the EC2 instance. That means that instead of having a set of 'Allow' or 'Deny' rules security groups can only contain 'Allow' rules while everything else is denied by default. \\
+
+That also means that by default SSH access needs to be allowed in one security group. More information on that can be found here: \\ 
+\href{https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/authorizing-access-to-an-instance.html}{AWS Docs: authorizing-access-to-an-instance}
+
+\subsubsection{EC2 Key Pairs}
+EC2 key pairs are basically just RSA key pairs generated and distributed using AWS-specific commands. In general one can follow the guide in the SSH section. However, these commands may be more convenient to some users, more information here: \\
+\href{https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html}{AWS Docs: ec2-key-pairs}
+
