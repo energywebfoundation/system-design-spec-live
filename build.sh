@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir -p build
 echo "installing stuff"
 npm install
 echo "Building diagrams..."
