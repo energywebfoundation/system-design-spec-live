@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir -p build
 echo "installing stuff"
-npm install
+#npm install
 echo "Building diagrams..."
 node_modules/.bin/diagrams sequence diagrams/mgnt-gui-boot.sequence build/mgnt-gui-boot.png
 dot -Tpng -obuild/flow-onboard-validator.png diagrams/flow-onboard-validator.dot
@@ -14,8 +14,8 @@ cp build/*.png src/images
 
 CURDIR=`pwd`
 shopt -s extglob
-docker run -it --rm --mount src=$CURDIR/src,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /usr/bin/tectronic -p main.tex
+docker run -it --rm --mount src=$CURDIR/src,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /usr/bin/tectonic -p main.tex
 
 echo "doc in src/main.pdf"
 
-#xdg-open src/main.pdf
+xdg-open src/main.pdf
