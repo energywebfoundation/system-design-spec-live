@@ -18,4 +18,4 @@ sudo docker run -it --rm --mount src=$CURDIR/src,target=/usr/src/tex,type=bind d
 
 echo "doc in src/main.pdf"
 
-xdg-open src/main.pdf
+#xdg-open src/main.pdf
