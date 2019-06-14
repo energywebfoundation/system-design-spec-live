@@ -7,7 +7,6 @@ digraph {
 
     hasevent [shape=diamond, label="Block contains\nNodeControl\n event\nfor our address?"]
     geteventid [shape=box, label="Read NodeControl event"]
-    waitfinal [shape=box, label="Wait for finality"]
     readinstruction [shape=box, label="Read expected state from\nNodeControl Contract"]
     execute [shape=box, label="Compare expected state against\ncurrent state and execute\naction to reach expected state"]
     reportdone [shape=box, label="Report update as executed to\nnodecontrol contract"]
@@ -16,7 +15,7 @@ digraph {
     hasevent -> listen [label="no"]
     hasevent -> geteventid [label="yes"]
 
-    geteventid -> waitfinal -> readinstruction -> execute -> reportdone -> listen
+    geteventid -> readinstruction -> execute -> reportdone -> listen
     
 
     {rank=same;listen check}

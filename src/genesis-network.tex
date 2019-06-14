@@ -17,8 +17,9 @@ The genesis validators will be starting the chain and also their validator accou
 The following outgoing traffic is permitted though an AWS NAT gateway:
 
 \begin{itemize}
-    \item DNS (63/UDP)
-    \item HTTPS (443/TCP) - mainly for sys updates
+    \item DNS (53/UDP+TCP)
+    \item HTTP (80/TCP) - mainly for sys updates
+    \item HTTPS (443/TCP) - mainly for sending telemetry
 \end{itemize}
 
 Blockchain traffic is only allowed inside the AWS VPC to the Bootnodes. The validators will have a special configuration file for parity to facilitate that along with the following security group settings
@@ -29,7 +30,7 @@ Blockchain traffic is only allowed inside the AWS VPC to the Bootnodes. The vali
     \item Allow SSH traffic only inbound via a jump host inside the VPC over RFC1918
 \end{itemize}
 
-A preferred EC2 Instance type would be i3.xlarge (4 cores - Xeon E5 2686v4, 30GB RAM, 950GB NVMe SSD). These nodes also don't have dedicated public IP's
+A preferred EC2 Instance type would be c5.xlarge. These nodes also don't have dedicated public IP's
 
 \subsection{Bootnodes}
 

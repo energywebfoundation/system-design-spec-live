@@ -1,20 +1,16 @@
 \section{Telemetry}
 
 Authority nodes have to send automatic telemetry data to NetOps. This helps detecting attacks or other network disturbances early.
-The following telemetry is collected and send through a secure channel (see Telemetry Signer and Ingress in \ref{components}) to EWF NetOps:
+The following telemetry is collected and send to the telemetry SaaS provider:
 
 \begin{itemize}
     \item CPU usage
     \item Memory usage
     \item Disk usage
     \item Number of connected blockchain peers
-    \item List of visible P2P peers
-    \item Current block
-    \item Network latency to 3 different and major locations (eg. cloudflare, google, amazon)
+    \item Current block information (hash, number of tx, blocktime)
     \item Network throughput
     \item Network error rate
-    \item Number of SSH keys \footnote{Used to detect addition of keys}
     \item Service status for SSH, Docker and the Parity container
-    \item SHA256 hashes of key system components/binaries
-    \item Current chain specification (file or hash)
+    \item Statisatics per docker container
 \end{itemize}

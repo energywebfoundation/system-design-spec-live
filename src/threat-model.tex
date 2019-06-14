@@ -4,31 +4,29 @@ This section describes potential attack vectors to the system and how they are e
 
 \subsection{Telemetry}
 
-As telemetry needs to flow from the validators to a single ingress point on the management system it is not protected by decentralization.
+As telemetry needs to flow from the validators to a virtual single ingress point on the SaaS provider. It is not protected by decentralization.
 This telemetry helps to detect abnormalities in the operation of the validators caused by either system malfunction or deliberate attacks.
 
 \begin{description}
     \item[Sending tampered data] 
         If an attacker manages to disturb node operation, he might try to disguise this by sending normal looking telemetry to the telemetry ingress on behalf of the attacked node. NetOps would detect the faulty node with increased time delay as telemetry data would contradict actual node behavior. \\
-        \textbf{Prevention:} Each telemetry package will be signed with the validators private key and verified by telemetry ingress. This way an attacker is not able to send tampered telemetry on behalf of a node.
+        \textbf{Acknoledged:} The current SaaS system won't protect against this attack. 
     
     \item[Denial-of-Service against the telemetry ingress] 
         An attacker might try to bring down the telemetry ingress completely to "blind" the EWF NetOps team about the status of the validator network. \\
-        \textbf{Mitigation:} Telemetry senders on the validators will keep track of connection failures to the telemetry ingress. If the connection is unstable or down for a particular amount of time the node will send periodically (<10 minutes) basic health metrics via a second channel (eg. E-Mail).
-        EWF NetOps has access to this channel and can at least verify basic health of the system.
+        \textbf{Acknoledged:} The SaaS provider should be able to handle an attack against his infrastructure. But this is not proofed.
 
     \item[Phishing for telemetry] 
         An attacker might try to receive telemetry from a node by re-routing telemetry traffic to an attacker system that mimics the ingress (DNS spoofing, MITM). The attacker can gain knowledge about for example the systems load patterns or how a system might respond to an attack. \\
-        \textbf{Prevention:} Connection between telemetry sender and telemetry ingress is HTTPS. The SHA256 fingerprint of the ingress certificate is verified against the known good fingerprints.
-        The fingerprint gets deployed along with the telemetry sender component and can only be updated through an update request from the blockchain.
+        \textbf{Acknoledged:} The SaaS provider should be able to handle an attack against his infrastructure.
         
     \item[DNS-Spoof/MitM against GUI] 
         An attacker might manage to DNS Spoof/MitM the connection between the browser of a member from the NetOps team and the telemetry backend. This way the attacker could present a faked system state of the validator network to NetOps. \\
-        \textbf{Prevention:} Each JSON response from the telemetry backend needs to carry a signature for the payload that can be verified by the management dApp
+        \textbf{Acknoledged:} The SaaS provider is not able to provide signed data. Security relies on an untampered HTTPS connection.
 
     \item[Unauthorized access to telemetry data]
         Telemetry data should only be available to the EWF NetOps Team. An attacker might try to directly call the telemetry backend to receive the data. \\
-        \textbf{Prevention:} The telemetry backend will present a challenge to the GUI which the EWF NetOps team member has to sign with his private key using metamask. This challenge+signature is then send along with all following requests and verified against a smart contract.
+        \textbf{Acknoledged:} The SaaS provider has to authenticate the users correctly.
 
 \end{description}
 
@@ -50,28 +48,9 @@ The component has the potential to disable a node due to a faulty or malicious u
 \end{description}
 
 
-\subsection{Management GUI/dApp}
-
-The Management GUI is the central hub for the NetOps team to verify healthiness and current operational status of the validator network. Therefore it has a high requirement on reliability.
-
-\begin{description}
-
-    \item[Server delivering UI to NetOps is not available] 
-        An attacker might be able to DDoS the Server/CDN or otherwise disturb connection to the assets needed to run the management dApp. \\
-        \textbf{Prevention:} The dApp itself is hosted on IPFS. Therefore taking down a single UI serving node won't disturb operation. For improved reliability NetOps members should run their own local IPFS nodes and use the IPFS companion extension,
-        This allows the local IPFS node to be used to deliver the GUI to the browser. 
-
-    \item[Deliver malicious dApp to NetOps team] 
-        An attacker might be able to deliver a malicious dApp to the NetOps team. With this it might be possible to deceive NetOps about the current status of the validator network or have them sign bogus update commands.  \\
-        \textbf{Prevention:} Provide a local bootstrap copy of the index.html page that loads the dApp from IPFS, preferably with a local IPFS node. Have hardcoded checksums of those files in the index.html and verify payload during load as the attacker could intercept HTTPS traffic to the IPFS gateways or the local node and deliver a malicious asset to the browser.
-
-\end{description}
-
-
 \subsection{Other Attack Vectors}
 
 This section consolidates attack vectors that are either not specific to a single component or targeted against miscellaneous components.
-
 
 \begin{description}
 
